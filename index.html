@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مانغا بوكس - موقع مشاهدة المانغا</title>
+    <style>
+        /* التنسيقات العامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* الشريط العلوي */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #e74c3c;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar input {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .search-bar button {
+            padding: 0.5rem;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        /* المحتوى الرئيسي */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://via.placeholder.com/1200x400');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* قسم المانغا */
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e74c3c;
+            color: #2c3e50;
+        }
+        
+        .manga-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .manga-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .manga-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .manga-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .manga-info {
+            padding: 1rem;
+        }
+        
+        .manga-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .manga-chapters {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* التذييل */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            margin: 0 1rem;
+            color: #ddd;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #e74c3c;
+        }
+        
+        .copyright {
+            margin-top: 1rem;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* التجاوب مع الشاشات المختلفة */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            .search-bar {
+                margin-top: 1rem;
+                width: 100%;
+            }
+            
+            .search-bar input {
+                flex-grow: 1;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .manga-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الشريط العلوي -->
+    <header>
+        <div class="header-container">
+            <div class="logo">مانغا بوكس</div>
+            <nav>
+                <ul>
+                    <li><a href="#">الرئيسية</a></li>
+                    <li><a href="#">المانغا</a></li>
+                    <li><a href="#">الاقسام</a></li>
+                    <li><a href="#">المفضلة</a></li>
+                    <li><a href="#">اتصل بنا</a></li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="ابحث عن مانغا...">
+                <button>بحث</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+        <!-- قسم البطل -->
+        <section class="hero">
+            <h1>استكشف عالم المانغا الرائع</h1>
+            <p>أكبر مكتبة عربية لمشاهدة المانغا والمانهوا بجودة عربية</p>
+            <button class="btn">استكشف الآن</button>
+        </section>
+
+        <!-- أحدث الإصدارات -->
+        <section>
+            <h2 class="section-title">أحدث الإصدارات</h2>
+            <div class="manga-grid">
+                <!-- مانغا 1 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 1">
+                    <div class="manga-info">
+                        <div class="manga-title">ون بيس</div>
+                        <div class="manga-chapters">الفصل 1054</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 2 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 2">
+                    <div class="manga-info">
+                        <div class="manga-title">ناروتو</div>
+                        <div class="manga-chapters">الفصل 700</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 3 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 3">
+                    <div class="manga-info">
+                        <div class="manga-title">هجوم العمالقة</div>
+                        <div class="manga-chapters">الفصل 139</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 4 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 4">
+                    <div class="manga-info">
+                        <div class="manga-title">بليتش</div>
+                        <div class="manga-chapters">الفصل 686</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 5 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 5">
+                    <div class="manga-info">
+                        <div class="manga-title">بلاك كلوفير</div>
+                        <div class="manga-chapters">الفصل 332</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 6 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 6">
+                    <div class="manga-info">
+                        <div class="manga-title">سباي فاميلي</div>
+                        <div class="manga-chapters">الفصل 72</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الأكثر شيوعا -->
+        <section>
+            <h2 class="section-title">الأكثر شيوعاً</h2>
+            <div class="manga-grid">
+                <!-- مانغا 1 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 1">
+                    <div class="manga-info">
+                        <div class="manga-title">بيرسيرك</div>
+                        <div class="manga-chapters">الفصل 367</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 2 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 2">
+                    <div class="manga-info">
+                        <div class="manga-title">فن القتال</div>
+                        <div class="manga-chapters">الفصل 155</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 3 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 3">
+                    <div class="manga-info">
+                        <div class="manga-title">المدقق</div>
+                        <div class="manga-chapters">الفصل 201</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 4 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 4">
+                    <div class="manga-info">
+                        <div class="manga-title">سولو ليفيلينج</div>
+                        <div class="manga-chapters">الفصل 179</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 5 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 5">
+                    <div class="manga-info">
+                        <div class="manga-title">تطوير القوى</div>
+                        <div class="manga-chapters">الفصل 89</div>
+                    </div>
+                </div>
+                
+                <!-- مانغا 6 -->
+                <div class="manga-card">
+                    <img src="https://via.placeholder.com/200x250" alt="مانغا 6">
+                    <div class="manga-info">
+                        <div class="manga-title">المعلم العظيم</div>
+                        <div class="manga-chapters">الفصل 134</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- التذييل -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">مانغا بوكس</div>
+            <div class="footer-links">
+                <a href="#">عن الموقع</a>
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">شروط الاستخدام</a>
+                <a href="#">الدعم</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 مانغا بوكس. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // كود جافاسكريبت بسيط للبحث
+        document.querySelector('.search-bar button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-bar input').value;
+            if (searchTerm.trim() !== '') {
+                alert('سيتم البحث عن: ' + searchTerm);
+                // هنا يمكن إضافة وظيفة البحث الفعلية
+            }
+        });
+        
+        // إضافة تأثير عند التمرير
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
