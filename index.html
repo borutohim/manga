@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مانجا فور عرب - قارئ المانغا</title>
+    <title>مانجا فور عرب - أفضل موقع لقراءة المانغا العربية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #2c3e50;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+        }
+        
         /* الأنماط الأساسية */
         * {
             margin: 0;
@@ -15,7 +24,7 @@
         }
         
         body {
-            background-color: #f5f5f5;
+            background-color: #f9f9f9;
             color: #333;
             line-height: 1.6;
         }
@@ -28,15 +37,16 @@
         
         .btn {
             padding: 0.8rem 1.5rem;
-            background-color: #e74c3c;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 1rem;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
         }
         
         .btn i {
@@ -45,11 +55,24 @@
         
         .btn:hover {
             background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
         
         /* أنماط القارئ */
         .reader-container {
-            background-color: #2c3e50;
+            background-color: var(--secondary-color);
             min-height: 100vh;
             padding: 1rem 0;
             display: none;
@@ -59,11 +82,12 @@
         
         .reader-header {
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(10px);
         }
         
         .reader-controls {
@@ -77,11 +101,15 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
         
         .reader-title {
             font-size: 1.2rem;
             font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
         }
         
         .reader-controls select {
@@ -90,6 +118,7 @@
             border: none;
             margin: 0 10px;
             background-color: white;
+            min-width: 150px;
         }
         
         .reader-actions {
@@ -99,17 +128,22 @@
         
         .reader-btn {
             padding: 0.5rem 1rem;
-            background-color: #e74c3c;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
+            transition: background-color 0.3s;
         }
         
         .reader-btn i {
             margin-left: 5px;
+        }
+        
+        .reader-btn:hover {
+            background-color: #c0392b;
         }
         
         .manga-pages {
@@ -121,55 +155,161 @@
         }
         
         .manga-page {
-            max-width: 800px;
+            max-width: 900px;
             margin-bottom: 1.5rem;
             background-color: white;
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         
         .manga-page img {
             width: 100%;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        
+        .manga-page img:hover {
+            transform: scale(1.01);
         }
         
         .page-navigation {
             display: flex;
             gap: 15px;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
             align-items: center;
             color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .page-nav-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .page-nav-btn:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+        }
+        
+        .page-nav-btn:hover:not(:disabled) {
+            background-color: #2980b9;
+        }
+        
+        .page-indicator {
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0 1rem;
         }
 
         /* صفحة المكتبة */
         .library-container {
             padding: 2rem 0;
         }
+        
+        .library-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 30px;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .search-box input {
+            border: none;
+            padding: 0.5rem;
+            width: 100%;
+            outline: none;
+        }
+        
+        .search-box button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+        
+        .categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-btn {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
 
         .manga-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
         }
         
         .manga-card {
             background-color: white;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
             cursor: pointer;
+            position: relative;
         }
         
         .manga-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .manga-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
         }
         
         .manga-card img {
             width: 100%;
-            height: 250px;
+            height: 280px;
             object-fit: cover;
         }
         
@@ -181,18 +321,34 @@
             font-weight: bold;
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
+            color: var(--dark-color);
         }
         
-        .manga-chapters {
+        .manga-meta {
+            display: flex;
+            justify-content: space-between;
             color: #777;
             font-size: 0.9rem;
+        }
+        
+        .manga-rating {
+            color: #f39c12;
+            display: flex;
+            align-items: center;
+        }
+        
+        .manga-rating i {
+            margin-left: 3px;
         }
 
         /* شريط التنقل */
         .main-nav {
-            background-color: #2c3e50;
+            background-color: var(--secondary-color);
             padding: 1rem 0;
-            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         .nav-container {
@@ -202,9 +358,15 @@
         }
         
         .site-logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #e74c3c;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .site-logo i {
+            margin-left: 10px;
         }
         
         .nav-links {
@@ -216,10 +378,204 @@
             color: white;
             text-decoration: none;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
         }
         
-        .nav-links a:hover {
-            color: #e74c3c;
+        .nav-links a i {
+            margin-left: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .user-actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .login-btn {
+            background-color: transparent;
+            border: 1px solid white !important;
+            color: white;
+        }
+        
+        .register-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .user-actions button i {
+            margin-left: 5px;
+        }
+
+        /* التذييل */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-description {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .footer-heading {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-heading:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a i {
+            margin-left: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+        
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* رسائل التنبيه */
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .alert-info {
+            background-color: #d6eaf8;
+            color: #2e86c1;
+            border-left: 4px solid #2e86c1;
+        }
+        
+        .alert i {
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* التجاوب مع الشاشات المختلفة */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .reader-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .reader-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .manga-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            
+            .page-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -227,43 +583,121 @@
     <!-- شريط التنقل -->
     <nav class="main-nav">
         <div class="container nav-container">
-            <div class="site-logo">مانجا فور عرب</div>
+            <div class="site-logo">
+                <i class="fas fa-book-open"></i>
+                <span>مانجا فور عرب</span>
+            </div>
             <div class="nav-links">
-                <a href="#" onclick="showLibrary()">المكتبة</a>
-                <a href="#">التصنيفات</a>
-                <a href="#">المفضلة</a>
+                <a href="#" class="active" onclick="showLibrary()"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="#"><i class="fas fa-tags"></i> التصنيفات</a>
+                <a href="#"><i class="fas fa-heart"></i> المفضلة</a>
+                <a href="#"><i class="fas fa-history"></i> التاريخ</a>
+            </div>
+            <div class="user-actions">
+                <button class="login-btn"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
+                <button class="register-btn"><i class="fas fa-user-plus"></i> إنشاء حساب</button>
             </div>
         </div>
     </nav>
 
     <!-- صفحة المكتبة -->
     <div id="library-container" class="container library-container">
-        <h1>مكتبة المانغا</h1>
+        <div class="library-header">
+            <h1>مكتبة المانغا</h1>
+            <div class="search-box">
+                <input type="text" placeholder="ابحث عن مانغا..." id="search-input">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            <span>مرحبًا بك في مكتبة المانغا العربية. اختر من الأعمال أدناه لبدء القراءة.</span>
+        </div>
+        
+        <div class="categories">
+            <button class="category-btn active">الكل</button>
+            <button class="category-btn">أكشن</button>
+            <button class="category-btn">مغامرات</button>
+            <button class="category-btn">كوميدي</button>
+            <button class="category-btn">رومانسي</button>
+            <button class="category-btn">خيال علمي</button>
+            <button class="category-btn">فانتازيا</button>
+        </div>
+        
         <div class="manga-grid">
             <!-- مانغا 1 -->
             <div class="manga-card" onclick="openReader(1054, 'ون بيس')">
-                <img src="https://via.placeholder.com/200x250/FF5733/FFFFFF?text=ون+بيس" alt="ون بيس">
+                <div class="manga-badge">جديد</div>
+                <img src="https://via.placeholder.com/220x280/FF5733/FFFFFF?text=ون+بيس" alt="ون بيس">
                 <div class="manga-info">
                     <div class="manga-title">ون بيس</div>
-                    <div class="manga-chapters">آخر فصل: 1054</div>
+                    <div class="manga-meta">
+                        <span>الفصل 1054</span>
+                        <span class="manga-rating">4.9 <i class="fas fa-star"></i></span>
+                    </div>
                 </div>
             </div>
             
             <!-- مانغا 2 -->
-            <div class="manga-card" onclick="openReader(1, 'ناروتو')">
-                <img src="https://via.placeholder.com/200x250/4CAF50/FFFFFF?text=ناروتو" alt="ناروتو">
+            <div class="manga-card" onclick="openReader(700, 'ناروتو')">
+                <img src="https://via.placeholder.com/220x280/4CAF50/FFFFFF?text=ناروتو" alt="ناروتو">
                 <div class="manga-info">
                     <div class="manga-title">ناروتو</div>
-                    <div class="manga-chapters">آخر فصل: 700</div>
+                    <div class="manga-meta">
+                        <span>الفصل 700</span>
+                        <span class="manga-rating">4.8 <i class="fas fa-star"></i></span>
+                    </div>
                 </div>
             </div>
             
             <!-- مانغا 3 -->
-            <div class="manga-card" onclick="openReader(1, 'هجوم العمالقة')">
-                <img src="https://via.placeholder.com/200x250/1565C0/FFFFFF?text=هجوم+العمالقة" alt="هجوم العمالقة">
+            <div class="manga-card" onclick="openReader(139, 'هجوم العمالقة')">
+                <img src="https://via.placeholder.com/220x280/1565C0/FFFFFF?text=هجوم+العمالقة" alt="هجوم العمالقة">
                 <div class="manga-info">
                     <div class="manga-title">هجوم العمالقة</div>
-                    <div class="manga-chapters">آخر فصل: 139</div>
+                    <div class="manga-meta">
+                        <span>الفصل 139</span>
+                        <span class="manga-rating">4.7 <i class="fas fa-star"></i></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- مانغا 4 -->
+            <div class="manga-card" onclick="openReader(1, 'بليتش')">
+                <div class="manga-badge">شائع</div>
+                <img src="https://via.placeholder.com/220x280/9C27B0/FFFFFF?text=بليتش" alt="بليتش">
+                <div class="manga-info">
+                    <div class="manga-title">بليتش</div>
+                    <div class="manga-meta">
+                        <span>الفصل 686</span>
+                        <span class="manga-rating">4.5 <i class="fas fa-star"></i></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- مانغا 5 -->
+            <div class="manga-card" onclick="openReader(1, 'بلاك كلوفير')">
+                <img src="https://via.placeholder.com/220x280/FF9800/FFFFFF?text=بلاك+كلوفير" alt="بلاك كلوفير">
+                <div class="manga-info">
+                    <div class="manga-title">بلاك كلوفير</div>
+                    <div class="manga-meta">
+                        <span>الفصل 332</span>
+                        <span class="manga-rating">4.3 <i class="fas fa-star"></i></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- مانغا 6 -->
+            <div class="manga-card" onclick="openReader(1, 'سباي فاميلي')">
+                <div class="manga-badge">مميز</div>
+                <img src="https://via.placeholder.com/220x280/E91E63/FFFFFF?text=سباي+فاميلي" alt="سباي فاميلي">
+                <div class="manga-info">
+                    <div class="manga-title">سباي فاميلي</div>
+                    <div class="manga-meta">
+                        <span>الفصل 72</span>
+                        <span class="manga-rating">4.6 <i class="fas fa-star"></i></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -284,8 +718,11 @@
                 </div>
                 
                 <div class="reader-actions">
+                    <button class="reader-btn" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i> ملء الشاشة
+                    </button>
                     <button class="reader-btn" onclick="showLibrary()">
-                        <i class="fas fa-arrow-right"></i> العودة للمكتبة
+                        <i class="fas fa-arrow-right"></i> العودة
                     </button>
                 </div>
             </div>
@@ -296,6 +733,50 @@
         </div>
     </div>
 
+    <!-- التذييل -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">مانجا فور عرب</div>
+                    <p class="footer-description">
+                        أفضل منصة عربية لقراءة المانغا المترجمة بجودة عالية. نقدم أحدث الفصول بأسرع وقت ممكن.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-home"></i> الرئيسية</a></li>
+                        <li><a href="#"><i class="fas fa-book"></i> المكتبة</a></li>
+                        <li><a href="#"><i class="fas fa-tags"></i> التصنيفات</a></li>
+                        <li><a href="#"><i class="fas fa-heart"></i> المفضلة</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">الدعم</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-question-circle"></i> المساعدة</a></li>
+                        <li><a href="#"><i class="fas fa-shield-alt"></i> الخصوصية</a></li>
+                        <li><a href="#"><i class="fas fa-file-contract"></i> الشروط</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 مانجا فور عرب. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+
     <script>
         // بيانات المانغا الكاملة
         const mangaData = {
@@ -305,29 +786,29 @@
                         id: 1054,
                         title: "المعركة النهائية",
                         pages: [
-                            "https://via.placeholder.com/800x1200/FF5733/FFFFFF?text=ون+بيس+1054+-+صفحة+1",
-                            "https://via.placeholder.com/800x1200/C70039/FFFFFF?text=ون+بيس+1054+-+صفحة+2",
-                            "https://via.placeholder.com/800x1200/900C3F/FFFFFF?text=ون+بيس+1054+-+صفحة+3",
-                            "https://via.placeholder.com/800x1200/581845/FFFFFF?text=ون+بيس+1054+-+صفحة+4"
+                            "https://via.placeholder.com/900x1350/FF5733/FFFFFF?text=ون+بيس+1054+-+صفحة+1",
+                            "https://via.placeholder.com/900x1350/C70039/FFFFFF?text=ون+بيس+1054+-+صفحة+2",
+                            "https://via.placeholder.com/900x1350/900C3F/FFFFFF?text=ون+بيس+1054+-+صفحة+3",
+                            "https://via.placeholder.com/900x1350/581845/FFFFFF?text=ون+بيس+1054+-+صفحة+4"
                         ]
                     },
                     {
                         id: 1053,
                         title: "تحالف جديد",
                         pages: [
-                            "https://via.placeholder.com/800x1200/4CAF50/FFFFFF?text=ون+بيس+1053+-+صفحة+1",
-                            "https://via.placeholder.com/800x1200/2E7D32/FFFFFF?text=ون+بيس+1053+-+صفحة+2",
-                            "https://via.placeholder.com/800x1200/1B5E20/FFFFFF?text=ون+بيس+1053+-+صفحة+3"
+                            "https://via.placeholder.com/900x1350/4CAF50/FFFFFF?text=ون+بيس+1053+-+صفحة+1",
+                            "https://via.placeholder.com/900x1350/2E7D32/FFFFFF?text=ون+بيس+1053+-+صفحة+2",
+                            "https://via.placeholder.com/900x1350/1B5E20/FFFFFF?text=ون+بيس+1053+-+صفحة+3"
                         ]
                     },
                     {
                         id: 1052,
                         title: "العدو القديم",
                         pages: [
-                            "https://via.placeholder.com/800x1200/1565C0/FFFFFF?text=ون+بيس+1052+-+صفحة+1",
-                            "https://via.placeholder.com/800x1200/0D47A1/FFFFFF?text=ون+بيس+1052+-+صفحة+2",
-                            "https://via.placeholder.com/800x1200/0277BD/FFFFFF?text=ون+بيس+1052+-+صفحة+3",
-                            "https://via.placeholder.com/800x1200/01579B/FFFFFF?text=ون+بيس+1052+-+صفحة+4"
+                            "https://via.placeholder.com/900x1350/1565C0/FFFFFF?text=ون+بيس+1052+-+صفحة+1",
+                            "https://via.placeholder.com/900x1350/0D47A1/FFFFFF?text=ون+بيس+1052+-+صفحة+2",
+                            "https://via.placeholder.com/900x1350/0277BD/FFFFFF?text=ون+بيس+1052+-+صفحة+3",
+                            "https://via.placeholder.com/900x1350/01579B/FFFFFF?text=ون+بيس+1052+-+صفحة+4"
                         ]
                     }
                 ]
@@ -338,9 +819,9 @@
                         id: 700,
                         title: "الفصل الأخير",
                         pages: [
-                            "https://via.placeholder.com/800x1200/FF9800/FFFFFF?text=ناروتو+700+-+صفحة+1",
-                            "https://via.placeholder.com/800x1200/F57C00/FFFFFF?text=ناروتو+700+-+صفحة+2",
-                            "https://via.placeholder.com/800x1200/E65100/FFFFFF?text=ناروتو+700+-+صفحة+3"
+                            "https://via.placeholder.com/900x1350/FF9800/FFFFFF?text=ناروتو+700+-+صفحة+1",
+                            "https://via.placeholder.com/900x1350/F57C00/FFFFFF?text=ناروتو+700+-+صفحة+2",
+                            "https://via.placeholder.com/900x1350/E65100/FFFFFF?text=ناروتو+700+-+صفحة+3"
                         ]
                     }
                 ]
@@ -351,9 +832,48 @@
                         id: 139,
                         title: "الفصل الأخير",
                         pages: [
-                            "https://via.placeholder.com/800x1200/9C27B0/FFFFFF?text=هجوم+العمالقة+139+-+صفحة+1",
-                            "https://via.placeholder.com/800x1200/7B1FA2/FFFFFF?text=هجوم+العمالقة+139+-+صفحة+2",
-                            "https://via.placeholder.com/800x1200/6A1B9A/FFFFFF?text=هجوم+العمالقة+139+-+صفحة+3"
+                            "https://via.placeholder.com/900x1350/9C27B0/FFFFFF?text=هجوم+العمالقة+139+-+صفحة+1",
+                            "https://via.placeholder.com/900x1350/7B1FA2/FFFFFF?text=هجوم+العمالقة+139+-+صفحة+2",
+                            "https://via.placeholder.com/900x1350/6A1B9A/FFFFFF?text=هجوم+العمالقة+139+-+صفحة+3"
+                        ]
+                    }
+                ]
+            },
+            "بليتش": {
+                chapters: [
+                    {
+                        id: 686,
+                        title: "الفصل الأخير",
+                        pages: [
+                            "https://via.placeholder.com/900x1350/9C27B0/FFFFFF?text=بليتش+686+-+صفحة+1",
+                            "https://via.placeholder.com/900x1350/7B1FA2/FFFFFF?text=بليتش+686+-+صفحة+2",
+                            "https://via.placeholder.com/900x1350/6A1B9A/FFFFFF?text=بليتش+686+-+صفحة+3"
+                        ]
+                    }
+                ]
+            },
+            "بلاك كلوفير": {
+                chapters: [
+                    {
+                        id: 332,
+                        title: "الفصل الحالي",
+                        pages: [
+                            "https://via.placeholder.com/900x1350/FF9800/FFFFFF?text=بلاك+كلوفير+332+-+صفحة+1",
+                            "https://via.placeholder.com/900x1350/F57C00/FFFFFF?text=بلاك+كلوفير+332+-+صفحة+2",
+                            "https://via.placeholder.com/900x1350/E65100/FFFFFF?text=بلاك+كلوفير+332+-+صفحة+3"
+                        ]
+                    }
+                ]
+            },
+            "سباي فاميلي": {
+                chapters: [
+                    {
+                        id: 72,
+                        title: "الفصل الحالي",
+                        pages: [
+                            "https://via.placeholder.com/900x1350/E91E63/FFFFFF?text=سباي+فاميلي+72+-+صفحة+1",
+                            "https://via.placeholder.com/900x1350/AD1457/FFFFFF?text=سباي+فاميلي+72+-+صفحة+2",
+                            "https://via.placeholder.com/900x1350/880E4F/FFFFFF?text=سباي+فاميلي+72+-+صفحة+3"
                         ]
                     }
                 ]
@@ -363,11 +883,13 @@
         let currentManga = "";
         let currentChapter = null;
         let currentPage = 1;
+        let isFullscreen = false;
 
         // عرض المكتبة
         function showLibrary() {
             document.getElementById('reader-container').style.display = 'none';
             document.getElementById('library-container').style.display = 'block';
+            exitFullscreen();
         }
 
         // فتح القارئ مع فصل معين
@@ -395,7 +917,10 @@
             select.innerHTML = '';
             
             if (mangaData[mangaTitle]) {
-                mangaData[mangaTitle].chapters.forEach(chapter => {
+                // فرز الفصول تنازلياً (الأحدث أولاً)
+                const sortedChapters = [...mangaData[mangaTitle].chapters].sort((a, b) => b.id - a.id);
+                
+                sortedChapters.forEach(chapter => {
                     const option = document.createElement('option');
                     option.value = chapter.id;
                     option.textContent = `${chapter.id}: ${chapter.title}`;
@@ -451,9 +976,9 @@
             const navigationDiv = document.createElement('div');
             navigationDiv.className = 'page-navigation';
             navigationDiv.innerHTML = `
-                <button class="btn" onclick="prevPage()"><i class="fas fa-arrow-right"></i> الصفحة السابقة</button>
-                <span id="page-indicator">الصفحة 1 من ${chapter.pages.length}</span>
-                <button class="btn" onclick="nextPage()">الصفحة التالية <i class="fas fa-arrow-left"></i></button>
+                <button class="page-nav-btn" onclick="prevPage()" id="prev-btn"><i class="fas fa-arrow-right"></i> السابقة</button>
+                <span class="page-indicator" id="page-indicator">الصفحة 1 من ${chapter.pages.length}</span>
+                <button class="page-nav-btn" onclick="nextPage()" id="next-btn">التالية <i class="fas fa-arrow-left"></i></button>
             `;
             
             mangaPagesContainer.appendChild(navigationDiv);
@@ -462,9 +987,24 @@
             currentChapter = chapter;
             currentPage = 1;
             updatePageIndicator();
+            updateNavigationButtons();
             
             // التمرير إلى أعلى الصفحة
             window.scrollTo(0, 0);
+            
+            // إضافة مستمعي الأحداث لأزرار键盘
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        // التعامل مع ضغطات المفاتيح
+        function handleKeyPress(e) {
+            if (e.key === 'ArrowRight') {
+                prevPage();
+            } else if (e.key === 'ArrowLeft') {
+                nextPage();
+            } else if (e.key === 'Escape' && isFullscreen) {
+                toggleFullscreen();
+            }
         }
 
         // الانتقال إلى الصفحة التالية
@@ -475,6 +1015,7 @@
                 currentPage++;
                 scrollToPage(currentPage);
                 updatePageIndicator();
+                updateNavigationButtons();
             }
         }
 
@@ -486,6 +1027,7 @@
                 currentPage--;
                 scrollToPage(currentPage);
                 updatePageIndicator();
+                updateNavigationButtons();
             }
         }
 
@@ -505,10 +1047,82 @@
             }
         }
 
+        // تحديث حالة أزرار التنقل
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (prevBtn) {
+                prevBtn.disabled = currentPage === 1;
+            }
+            
+            if (nextBtn) {
+                nextBtn.disabled = currentPage === currentChapter.pages.length;
+            }
+        }
+
+        // تبديل وضع ملء الشاشة
+        function toggleFullscreen() {
+            const elem = document.documentElement;
+            
+            if (!isFullscreen) {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+                isFullscreen = true;
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                isFullscreen = false;
+            }
+        }
+
+        // الخروج من وضع ملء الشاشة
+        function exitFullscreen() {
+            if (isFullscreen) {
+                toggleFullscreen();
+            }
+        }
+
         // عند تحميل الصفحة، عرض المكتبة
         window.onload = function() {
             showLibrary();
+            
+            // إضافة مستمع事件 للبحث
+            document.getElementById('search-input').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    searchManga(this.value);
+                }
+            });
+            
+            document.querySelector('.search-box button').addEventListener('click', function() {
+                const searchValue = document.getElementById('search-input').value;
+                searchManga(searchValue);
+            });
+            
+            // إضافة مستمع events لأزرار التصنيفات
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    // هنا يمكنك إضافة فلترة المانغا حسب التصنيف
+                });
+            });
         };
+
+        // دالة البحث (يمكن تطويرها لاحقاً)
+        function searchManga(query) {
+            alert(`سيتم البحث عن: ${query} (هذه الميزة قيد التطوير)`);
+        }
     </script>
 </body>
 </html>
